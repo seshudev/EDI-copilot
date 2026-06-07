@@ -1,0 +1,38 @@
+[
+  {
+    "id": "837-overview",
+    "keywords": ["837", "professional claim", "claim file", "what is 837"],
+    "question": "What is an ANSI X12 837 transaction?",
+    "answer": "The ANSI X12 837 is the HIPAA-standard electronic claim. The 837P variant is used for professional (physician) claims; 837I is for institutional (hospital) claims; 837D is for dental. It replaces paper CMS-1500 or UB-04 submissions and includes subscriber, patient, provider, diagnosis, and service line detail."
+  },
+  {
+    "id": "999-ak901",
+    "keywords": ["999", "ak9", "ak901", "accepted with errors", "functional ack"],
+    "question": "What does AK901 mean on a 999 acknowledgment?",
+    "answer": "AK901 on a 999 Functional Acknowledgment means the interchange was Accepted with Errors. The file was received and structurally processed, but one or more transaction sets contain errors. Review IK3/IK4 segments (or equivalent implementation-specific error loops) to identify the failing ST/segment and correct the source 837 before resubmitting."
+  },
+  {
+    "id": "277ca-status",
+    "keywords": ["277", "277ca", "claim status", "rejected claim"],
+    "question": "How do I read a 277CA claim status response?",
+    "answer": "The 277CA (Claim Acknowledgment) reports payer acceptance or rejection at the claim level. Check STC segments for category codes (e.g., A1 = Acknowledged/Forwarded, A3 = Rejected). Match REF segments (patient control number, payer claim number) to your internal claim ID. Rejections often cite missing NPI, invalid subscriber ID, or loop 2300/2400 data issues—use the STC free-text and status codes to drive remediation."
+  },
+  {
+    "id": "834-enrollment",
+    "keywords": ["834", "enrollment", "benefit enrollment"],
+    "question": "What is the 834 used for?",
+    "answer": "The 834 Benefit Enrollment and Maintenance transaction transmits member eligibility and enrollment changes between employers, exchanges, or TPAs and health plans. It supports new enrollments, terminations, and demographic updates. Common segments include INS (insured), REF (member ID), and HD (health coverage) with maintenance reason codes."
+  },
+  {
+    "id": "clm02-pcn",
+    "keywords": ["clm02", "patient control number", "duplicate claim"],
+    "question": "Why was my claim rejected for duplicate CLM02?",
+    "answer": "CLM02 is the Patient Control Number—a unique identifier you assign per claim. Payers reject duplicates when CLM02 was used on a prior submission for the same provider, dates of service, and member. Generate a new CLM02 for corrected claims (often suffix with -CORR1) and reference the original payer ICN in REF*F8 when submitting adjustments."
+  },
+  {
+    "id": "hipaa-5010",
+    "keywords": ["hipaa", "5010", "version", "compliance"],
+    "question": "What HIPAA version should our 837 files use?",
+    "answer": "Trading partners typically require ASC X12 version 005010X222A1 (837P professional) or 005010X223A2 (837I institutional). Confirm the payer's companion guide—some require specific REF, NM1, or SV1 qualifiers. Files must use HIPAA-compliant code sets (ICD-10, CPT/HCPCS, place of service, etc.)."
+  }
+]
