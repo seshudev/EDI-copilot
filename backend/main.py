@@ -1,5 +1,8 @@
+from typing import Optional
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from dotenv import load_dotenv
 from openai import OpenAI
 import os
@@ -12,13 +15,22 @@ app = FastAPI(title="Healthcare EDI Copilot")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 PLACEHOLDER_KEYS = {"", "YOUR_OPENAI_KEY", "sk-your-real-key-here"}
+
+
+class AskRequest(BaseModel):
+    question: str
 
 
 def is_demo_mode() -> bool:
@@ -53,7 +65,8 @@ def samples():
 
 
 @app.post("/ask")
-def ask(question: str):
+def ask(payload: Optional[AskRequest] = None, question: Optional[str] = None):
+    question = question or (payload.question if payload else "")
     if not question or not question.strip():
         raise HTTPException(status_code=400, detail="Question is required")
 
